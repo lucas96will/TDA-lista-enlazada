@@ -4,6 +4,26 @@
 
 #define TAM_PRUEBA_VEC 5
 
+/*Funcion para agregar todos los elementos del arreglo vec usando insertar (puede elegirse al principio o ultimo)*/
+void _lista_insertar_arreglo(lista_t* lista, int* vec, size_t largo, bool insertar(lista_t* lista, void* dato)) {
+    for(int i = 0; i < largo; i++) {
+        insertar(lista, &vec[i]);
+    }
+}
+
+/*borra todos los valores de la lista(de enteros) y compara con los valores del arreglo (ascendente)*/
+bool _lista_borrar_primero_todos(lista_t* lista, const int* vec) {
+    int num;
+    size_t i = 0;
+    while(!lista_esta_vacia(lista)){
+        num = *(int*)lista_borrar_primero(lista);
+        if(num != vec[i++]){
+            return false;
+        }
+    }
+    return true;
+}
+
 static void prueba_lista_crear() {
     lista_t* lista = lista_crear();
     printf("\nINICIO DE PRUEBAS DE CREAR LISTA\n");
@@ -77,12 +97,35 @@ static void prueba_lista_esta_vacia() {
 
 
 
+static void prueba_lista_borrar() {
+    printf("\nINICIO DE PRUEBAS DE LISTA BORRAR\n");
+
+    int vec[TAM_PRUEBA_VEC] = {4, 8, 12, 16, 20};
+    int vec2[TAM_PRUEBA_VEC] = {20, 16, 12, 8, 4};
+    lista_t* lista = lista_crear();
+
+    //Agrego a la lista algunos elementos a lo ultimo
+    _lista_insertar_arreglo(lista, vec, TAM_PRUEBA_VEC, lista_insertar_ultimo);
+    //La lista deberia ser (primero) [4, 8, 12, 16, 20] (ultimo), comprobamos*/
+
+    //Pruebo si los elementos borrados son los correctos!
+    print_test("Prueba lista borrar elementos agregados al final", _lista_borrar_primero_todos(lista, vec));
+
+    //Agrego elementos al principio y compruebo que al borrar sean los adecuados
+    _lista_insertar_arreglo(lista, vec, TAM_PRUEBA_VEC, lista_insertar_primero);
+    //La lista deberia ser (primero) [20, 16, 12, 8, 4] (ultimo), comprobamos*/
+
+    print_test("Prueba lista borrar elementos agregados al principio", _lista_borrar_primero_todos(lista, vec2));
+
+}
+
+
 void pruebas_lista_estudiante() {
     //..
     prueba_lista_crear();
     prueba_lista_esta_vacia();
     prueba_lista_insertar();
-
+    prueba_lista_borrar();
 
 }
 
