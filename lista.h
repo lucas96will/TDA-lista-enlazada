@@ -2,6 +2,7 @@
 #define TDA_LISTA_ENLAZADA_LISTA_H
 
 #include <stdbool.h>
+#include <stdlib.h>
 
 
 /* *****************************************************************

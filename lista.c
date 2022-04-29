@@ -35,6 +35,7 @@ nodo_t* crear_nodo(void) {
     if (nodo == NULL) {
         return NULL;
     }
+    nodo->siguiente = NULL;
     return nodo;
 }
 
@@ -66,22 +67,20 @@ bool lista_esta_vacia(const lista_t *lista) {
 }
 
 bool lista_insertar_primero(lista_t *lista, void *dato) {
-    nodo_t* nodo = crear_nodo();
-    if (nodo == NULL) {
+    nodo_t* nodo_nuevo = crear_nodo();
+    if (nodo_nuevo == NULL) {
         return false;
     }
 
-    nodo->dato = dato;
+    nodo_nuevo->dato = dato;
 
     if (lista->primero == NULL && lista->ultimo == NULL) {
-        lista->primero = nodo;
-        lista->ultimo  = nodo;
+        lista->primero = nodo_nuevo;
+        lista->ultimo  = nodo_nuevo;
     } else {
-        nodo_t* aux = lista->primero;
-        lista->primero = nodo;
-        nodo->siguiente = aux;
+        nodo_nuevo->siguiente = lista->primero;
+        lista->primero = nodo_nuevo;
     }
-
     lista->largo++;
     return true;
 
