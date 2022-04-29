@@ -12,7 +12,7 @@ void _lista_insertar_arreglo(lista_t* lista, int* vec, size_t largo, bool insert
 }
 
 /*borra todos los valores de la lista(de enteros) y compara con los valores del arreglo (ascendente)*/
-bool _lista_borrar_primero_todos(lista_t* lista, const int* vec) {
+bool _lista_borrar_comparar(lista_t* lista, const int* vec) {
     int num;
     size_t i = 0;
     while(!lista_esta_vacia(lista)){
@@ -109,14 +109,48 @@ static void prueba_lista_borrar() {
     //La lista deberia ser (primero) [4, 8, 12, 16, 20] (ultimo), comprobamos*/
 
     //Pruebo si los elementos borrados son los correctos!
-    print_test("Prueba lista borrar elementos agregados al final", _lista_borrar_primero_todos(lista, vec));
+    print_test("Prueba lista borrar elementos agregados al final", _lista_borrar_comparar(lista, vec));
 
     //Agrego elementos al principio y compruebo que al borrar sean los adecuados
     _lista_insertar_arreglo(lista, vec, TAM_PRUEBA_VEC, lista_insertar_primero);
     //La lista deberia ser (primero) [20, 16, 12, 8, 4] (ultimo), comprobamos*/
 
-    print_test("Prueba lista borrar elementos agregados al principio", _lista_borrar_primero_todos(lista, vec2));
+    print_test("Prueba lista borrar elementos agregados al principio", _lista_borrar_comparar(lista, vec2));
 
+    lista_destruir(lista, NULL);
+}
+
+static void prueba_lista_largo() {
+    lista_t* lista = lista_crear();
+    int vec[TAM_PRUEBA_VEC] = {4, 8, 12, 16, 20};
+
+    printf("\nINICIO DE PRUEBAS DE LARGO DE LISTA\n");
+
+    print_test("Prueba largo lista recien creada es 0", lista_largo(lista) == 0);
+
+    //Inserto 1 elemento y pruebo si el largo es 1
+    lista_insertar_primero(lista, &vec[0]);
+    print_test("Inserto un elemento, largo de lista 1", lista_largo(lista) == 1);
+
+    //Borro el dato y pruebo si el largo es 0
+    lista_borrar_primero(lista);
+    print_test("Borro el unico elemento, largo de lista 0", lista_largo(lista) == 0);
+
+    //Inserto varios elementos y pruebo si el largo es correcto
+    _lista_insertar_arreglo(lista, vec, TAM_PRUEBA_VEC, lista_insertar_primero);
+    print_test("Inserto 5 elementos, largo de lista 5", lista_largo(lista) == 5);
+
+    //Borro 1 elemento y pruebo si el largo es 4
+    lista_borrar_primero(lista);
+    print_test("Borro 1 elemento, largo de lista 4", lista_largo(lista) == 4);
+
+    //Borro todos los elementos y pruebo si el largo es 0
+    while(!lista_esta_vacia(lista)) {
+        lista_borrar_primero(lista);
+    }
+    print_test("Borro todos los elementos, largo de lista es 0", lista_largo(lista) == 0);
+
+    lista_destruir(lista, NULL);
 }
 
 
@@ -126,6 +160,7 @@ void pruebas_lista_estudiante() {
     prueba_lista_esta_vacia();
     prueba_lista_insertar();
     prueba_lista_borrar();
+    prueba_lista_largo();
 
 }
 
