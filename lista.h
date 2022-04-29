@@ -74,6 +74,9 @@ void lista_destruir(lista_t *lista, void (*destruir_dato)(void *));
  *               PRIMITIVA DEL ITERADOR INTERNO
  * *****************************************************************/
 
+// Itererador interno de la lista. Recorre la lista hasta el final, mientras la función iterar devuelva true.
+// Pre: la lista fue creada.
+// Post: Se recorrió la lista hasta el final, o hasta que la función visitar devolvió true.
 void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *extra);
 
 /* *****************************************************************

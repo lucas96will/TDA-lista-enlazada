@@ -87,22 +87,22 @@ bool lista_insertar_primero(lista_t *lista, void *dato) {
 }
 
 bool lista_insertar_ultimo(lista_t *lista, void *dato) {
-    nodo_t* nodo = crear_nodo();
-    if (nodo == NULL) {
+    nodo_t* nodo_nuevo = crear_nodo();
+    if (nodo_nuevo == NULL) {
         return false;
     }
 
-    nodo->dato = dato;
+    nodo_nuevo->dato = dato;
 
     if (lista->primero == NULL && lista->ultimo == NULL) {
-        lista->primero = nodo;
-        lista->ultimo  = nodo;
+        lista->primero = nodo_nuevo;
+        lista->ultimo  = nodo_nuevo;
     } else {
-        lista->ultimo->siguiente = nodo;
-        lista->ultimo = nodo;
+        lista->ultimo->siguiente = nodo_nuevo;
+        lista->ultimo = nodo_nuevo;
     }
 
-    nodo->siguiente = NULL;
+    nodo_nuevo->siguiente = NULL;
     lista->largo++;
     return true;
 }
@@ -160,7 +160,22 @@ void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
  *               PRIMITIVA DEL ITERADOR INTERNO
  * *****************************************************************/
 
-void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *extra);
+void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *extra) {
+    if (lista_esta_vacia(lista)) {
+        return;
+    }
+
+    bool continuar = true;
+    nodo_t* actual = lista->primero;
+    
+    while (actual && continuar) {
+
+        continuar = visitar(actual->dato, extra);
+        actual = actual->siguiente;
+    }
+
+    return;
+}
 
 /* *****************************************************************
  *               PRIMITIVAS DEL ITERADOR EXTERNO
