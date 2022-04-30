@@ -15,7 +15,7 @@ void _lista_insertar_arreglo(lista_t* lista, int* vec, size_t largo, bool insert
 bool _lista_borrar_comparar(lista_t* lista, const int* vec) {
     int num;
     size_t i = 0;
-    while(!lista_esta_vacia(lista)){
+    while(!lista_esta_vacia(lista)) {
         num = *(int*)lista_borrar_primero(lista);
         if(num != vec[i++]){
             return false;
@@ -153,6 +153,43 @@ static void prueba_lista_largo() {
     lista_destruir(lista, NULL);
 }
 
+static void prueba_lista_ver() {
+    lista_t* lista = lista_crear();
+    int vec[TAM_PRUEBA_VEC] = {4, 8, 12, 16, 20};
+
+    printf("\nINICIO DE PRUEBAS DE LISTA VER PRIMERO / ULTIMO \n");
+
+    lista_insertar_primero(lista, &vec[0]);
+    print_test("Inserto al inicio el 4 en la lista y el primero es el 4", *(int*) lista_ver_primero(lista) == 4);
+    print_test("El ultimo en la lista es el 4", *(int*) lista_ver_ultimo(lista) == 4);
+
+    lista_insertar_primero(lista, &vec[1]);
+    print_test("Inserto al inicio el 8 en la lista y el primero es el 8", *(int*) lista_ver_primero(lista) == 8);
+    print_test("El ultimo en la lista es el 4", *(int*) lista_ver_ultimo(lista) == 4);
+
+    lista_insertar_ultimo(lista, &vec[2]);
+    print_test("Inserto al final el 12 en la lista y el primero es el 8", *(int*) lista_ver_primero(lista) == 8);
+    print_test("El ultimo en la lista es el 12", *(int*) lista_ver_ultimo(lista) == 12);
+
+    //La lista es [8, 4, 12]
+
+    //Borro y me voy fijando el primero
+
+    lista_borrar_primero(lista);
+    print_test("Borro el primer elemento de la lista y el nuevo primero es el 4", *(int*) lista_ver_primero(lista) == 4);
+    print_test("El ultimo elemento sigue siendo el 12", *(int*) lista_ver_ultimo(lista) == 12);
+
+    lista_borrar_primero(lista);
+    print_test("Borro el primer elemento de la lista y el nuevo primero es el 4", *(int*) lista_ver_primero(lista) == 12);
+    print_test("El ultimo elemento sigue siendo el 12", *(int*) lista_ver_ultimo(lista) == 12);
+
+    lista_borrar_primero(lista);
+    //ambos, ultimo y primero deben ser null
+    print_test("El primer elemento de la lista es null", lista_ver_primero(lista) == NULL);
+    print_test("El ultimo elemento de la lista es null", lista_ver_ultimo(lista) == NULL);
+
+    lista_destruir(lista, NULL);
+}
 
 void pruebas_lista_estudiante() {
     //..
@@ -161,6 +198,7 @@ void pruebas_lista_estudiante() {
     prueba_lista_insertar();
     prueba_lista_borrar();
     prueba_lista_largo();
+    prueba_lista_ver();
 
 }
 
