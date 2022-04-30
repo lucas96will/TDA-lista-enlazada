@@ -3,6 +3,9 @@
 #include "testing.h"
 
 #define TAM_PRUEBA_VEC 5
+#define TAM_PRUEBA_VOLUMEN 100
+
+
 
 /*Funcion para agregar todos los elementos del arreglo vec usando insertar (puede elegirse al principio o ultimo)*/
 void _lista_insertar_arreglo(lista_t* lista, int* vec, size_t largo, bool insertar(lista_t* lista, void* dato)) {
@@ -191,6 +194,89 @@ static void prueba_lista_ver() {
     lista_destruir(lista, NULL);
 }
 
+
+
+bool sumar_numero(void* dato, void* sumar) {
+    *(int*) dato += *(int*) sumar;
+    return true;
+}
+
+typedef struct num_iterador{
+    bool estado;
+    int num;
+} num_iterador_t;
+
+bool encontrar_numero(void* dato, void* encontrado){
+    num_iterador_t aux = *(num_iterador_t*) encontrado;
+    if(*(int*) dato == aux.num){
+        aux.estado = true;
+        *(num_iterador_t*) encontrado = aux;
+        return false;
+    }
+    return true;
+}
+
+bool sumar_primeros_5(void* dato, void* extra){
+    if(*(int*) dato == 5){
+        return false;
+    }
+    *(int*) extra += *(int*) dato;
+    return true;
+}
+
+void static prueba_lista_iterar_interno() {
+    lista_t* lista = lista_crear();
+    int* vec = malloc(TAM_PRUEBA_VOLUMEN*sizeof(int));
+
+    //Inserto los elementos a la lista
+    for(int i = 0; i < TAM_PRUEBA_VOLUMEN; i++) {
+        vec[i] = i;
+        lista_insertar_ultimo(lista, &vec[i]);
+    }
+
+    int numero_a_sumar = 1;
+    lista_iterar(lista, sumar_numero, &numero_a_sumar);
+
+
+    num_iterador_t num_a_encontrar;
+    num_a_encontrar.estado = false;
+    num_a_encontrar.num = 99;
+
+    //Hallo si el 99 esta en la lista
+
+    lista_iterar(lista, encontrar_numero, &num_a_encontrar);
+
+    print_test("Se hallo el 99 en la lista con iterador interno", num_a_encontrar.estado);
+
+    bool suma = true;
+    int j = 0;
+    int num_aux;
+    while(!lista_esta_vacia(lista)) {
+        num_aux = *(int*) lista_borrar_primero(lista);
+        suma &= (num_aux == j+1);
+        j++;
+    }
+
+    print_test("Sumo 1 a todos los elementos con iterador interno", suma);
+
+    _lista_insertar_arreglo(lista, vec, TAM_PRUEBA_VOLUMEN, lista_insertar_ultimo);
+
+    int sumas = 0;
+
+    lista_iterar(lista, sumar_primeros_5, &sumas);
+
+    print_test("Sumo los primeros 5 elementos", sumas == 10);
+
+    while(!lista_esta_vacia(lista)){
+        lista_borrar_primero(lista);
+    }
+
+    print_test("Borro todos los elementos de la lista", lista_esta_vacia(lista));
+
+    lista_destruir(lista, NULL);
+    free(vec);
+}
+
 void pruebas_lista_estudiante() {
     //..
     prueba_lista_crear();
@@ -199,6 +285,7 @@ void pruebas_lista_estudiante() {
     prueba_lista_borrar();
     prueba_lista_largo();
     prueba_lista_ver();
+    prueba_lista_iterar_interno();
 
 }
 
