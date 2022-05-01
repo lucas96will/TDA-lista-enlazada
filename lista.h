@@ -100,6 +100,9 @@ bool lista_iter_avanzar(lista_iter_t *iter);
 // Post: devuelve el valor del iterador
 void *lista_iter_ver_actual(const lista_iter_t *iter);
 
+//
+// Pre: el iter fue creado
+// Post: devuelve true si el iterador se encuentra al final, false en otro caso
 bool lista_iter_al_final(const lista_iter_t *iter);
 
 // Destructor del iterador externo.

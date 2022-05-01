@@ -195,12 +195,12 @@ lista_iter_t *lista_iter_crear(lista_t *lista) {
 
 bool lista_iter_avanzar(lista_iter_t *iter) {
     //Si la lista esta vacia no se puede avanzar
-    if(lista_esta_vacia(iter->lista)){
+    if(lista_esta_vacia(iter->lista)) {
         return false;
     }
 
-    //Si el actual es null, no se puede avanzar
-    if(iter->act == NULL){
+    //Si el iterador se encuentra al final, no se puede avanzar
+    if(lista_iter_al_final(iter)) {
         return false;
     }
 
@@ -211,20 +211,21 @@ bool lista_iter_avanzar(lista_iter_t *iter) {
 }
 
 void *lista_iter_ver_actual(const lista_iter_t *iter) {
-    if(lista_esta_vacia(iter->lista)){
+    if(lista_esta_vacia(iter->lista)) {
         return NULL;
     }
 
-    // Si el actual esta posicionado al final de la lista (NULL)
-    // Entonces deberia devolver el valor del del elemento anterior
-    if(iter->act == NULL){
+    //Si el iterador esta al final, devuelvo el valor del anterior
+    if(lista_iter_al_final(iter)) {
         return iter->ant->dato;
     }
 
     return iter->act->dato;
 }
 
-bool lista_iter_al_final(const lista_iter_t *iter);
+bool lista_iter_al_final(const lista_iter_t *iter) {
+    return (iter->act == NULL);
+}
 
 void lista_iter_destruir(lista_iter_t *iter) {
     iter->lista = NULL;
