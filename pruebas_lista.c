@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "lista.h"
 #include "testing.h"
+#include "pila.h"
 
 #define TAM_PRUEBA_VEC 5
 #define TAM_PRUEBA_VOLUMEN 100
@@ -194,6 +195,140 @@ static void prueba_lista_ver() {
     lista_destruir(lista, NULL);
 }
 
+static void prueba_lista_NULL() {
+    printf("\nINICIO DE PRUEBAS DE VOLUMEN PARA LISTA \n");
+
+    lista_t* lista = lista_crear();
+    print_test("Lista esta vacia", lista_esta_vacia(lista));
+    print_test("Inserto NULL al principio", lista_insertar_primero(lista, NULL));
+    print_test("Inserto NULL al final", lista_insertar_ultimo(lista, NULL));
+    print_test("El primero es NULL", lista_ver_primero(lista) == NULL);
+    print_test("El ultimo es NULL", lista_ver_ultimo(lista) == NULL);
+    print_test("La lista no esta vacia", !lista_esta_vacia(lista));
+    print_test("Borrar el primero devuelve NULL", lista_borrar_primero(lista) == NULL);
+    print_test("Borrar el primero devuelve NULL", lista_borrar_primero(lista) == NULL);
+    print_test("Lista esta vacia nuevamente", lista_esta_vacia(lista));
+
+    lista_destruir(lista, NULL);
+}
+
+static void prueba_lista_volumen() {
+    printf("\nINICIO DE PRUEBAS DE VOLUMEN PARA LISTA \n");
+
+    size_t tam = 50000;
+    size_t i = 0;
+    bool ok_insertar = true;
+    bool ok_primero = true;
+    bool ok_ultimo = true;
+    bool ok_borrar = true;
+
+    lista_t* lista = lista_crear();
+
+    for (;i < tam; i++) {
+        ok_insertar &= lista_insertar_ultimo(lista, &i);
+        ok_ultimo &= (lista_ver_ultimo(lista) == &i);
+    }
+
+    i = 0;
+    print_test("Se pudieron insertar todos los elementos", ok_insertar);
+    print_test("Todos los ultimos eran correctos", ok_ultimo);
+
+    for (;i < tam; i++) {
+        ok_primero &= (lista_ver_primero(lista) == &i);
+        ok_borrar &= (lista_borrar_primero(lista) == &i);
+    }
+
+    print_test("Se pudieron borrar todos los elementos", ok_borrar);
+    print_test("Todos los primeros eran correctos", ok_primero);
+
+    lista_destruir(lista, NULL);
+
+}
+
+static void prueba_lista_vacia_destruccion_con_free() {
+    lista_t* lista = lista_crear();
+
+    printf("\nINICIO DE PRUEBAS DE DESTRUCCION CON LISTA VACIA Y FREE \n");
+
+    print_test("Crear lista", lista != NULL);
+    print_test("Lista creada vacia", lista_esta_vacia(lista));
+    print_test("Lista creada borrar primero es NULL", lista_borrar_primero(lista) == NULL);
+    print_test("Lista creada ver primero es NULL", lista_ver_primero(lista) == NULL);
+    print_test("Lista creada ver ultimo es NULL", lista_ver_primero(lista) == NULL);
+    print_test("Lista creada obtener largo es 0", lista_largo(lista) == 0);
+
+    lista_destruir(lista, free);
+}
+
+//Creo Wrapper para que cumplir la firma de lista_destruir
+void pila_destruir_wrapper(void* pila);
+
+void pila_destruir_wrapper(void* pila) {
+    pila_destruir(pila);
+}
+
+static void prueba_lista_de_pilas_con_destruccion() {
+    lista_t* lista = lista_crear();
+
+    printf("\nINICIO DE PRUEBAS DE DESTRUCCION CON LISTA DE PILAS \n");
+
+    int num1 = 1, num2 = 2, num3 = 3;
+    
+    //Creo 3 pilas distintas
+    pila_t* pila1 = pila_crear();
+    pila_t* pila2 = pila_crear();
+    pila_t* pila3 = pila_crear();
+
+    //Dos pilas tendran elementos, otra no
+    pila_apilar(pila2, &num1);
+    pila_apilar(pila2, &num2);
+    pila_apilar(pila3, &num3);
+
+    print_test("Inserto pila 1 en primer posicion", lista_insertar_primero(lista, pila1));
+    print_test("Pila 1 es el primero", lista_ver_primero(lista) == pila1);
+    print_test("Inserto pila 2 en primer posicion", lista_insertar_primero(lista, pila2));
+    print_test("Pila 2 es el primero", lista_ver_primero(lista) == pila2);
+    print_test("Inserto pila 3 en primer posicion", lista_insertar_primero(lista, pila3));
+    print_test("Pila 3 es el primero", lista_ver_primero(lista) == pila3);
+    
+    print_test("Pila 1 es el ultimo", lista_ver_ultimo(lista) == pila1);
+
+    lista_destruir(lista, pila_destruir_wrapper);
+}
+
+static void prueba_lista_de_pilas_con_destruccion_manual() {
+    lista_t* lista = lista_crear();
+
+    printf("\nINICIO DE PRUEBAS DE DESTRUCCION CON LISTA DE PILAS Y DESTRUCCION MANUAL \n");
+
+    int num1 = 1, num2 = 2, num3 = 3;
+    
+    //Creo 3 pilas distintas
+    pila_t* pila1 = pila_crear();
+    pila_t* pila2 = pila_crear();
+    pila_t* pila3 = pila_crear();
+
+    //Dos pilas tendran elementos, otra no
+    pila_apilar(pila2, &num1);
+    pila_apilar(pila2, &num2);
+    pila_apilar(pila3, &num3);
+
+    print_test("Inserto pila 1 en primer posicion", lista_insertar_primero(lista, pila1));
+    print_test("Pila 1 es el primero", lista_ver_primero(lista) == pila1);
+    print_test("Inserto pila 2 en primer posicion", lista_insertar_primero(lista, pila2));
+    print_test("Pila 2 es el primero", lista_ver_primero(lista) == pila2);
+    print_test("Inserto pila 3 en primer posicion", lista_insertar_primero(lista, pila3));
+    print_test("Pila 3 es el primero", lista_ver_primero(lista) == pila3);
+    
+    print_test("Pila 1 es el ultimo", lista_ver_ultimo(lista) == pila1);
+
+    lista_destruir(lista, NULL);
+
+    //Destruyo manualmente las pilas utilizadas
+    pila_destruir(pila1);
+    pila_destruir(pila2);
+    pila_destruir(pila3);
+}
 
 
 bool sumar_numero(void* dato, void* sumar) {
@@ -303,9 +438,14 @@ void pruebas_lista_estudiante() {
     prueba_lista_borrar();
     prueba_lista_largo();
     prueba_lista_ver();
+    prueba_lista_NULL();
+    prueba_lista_volumen();
+    prueba_lista_vacia_destruccion_con_free();
+    prueba_lista_de_pilas_con_destruccion();
+    prueba_lista_de_pilas_con_destruccion_manual();
     prueba_lista_iterar_interno();
-
     prueba_lista_iterador_insertar();
+    
 }
 
 
