@@ -100,18 +100,26 @@ bool lista_iter_avanzar(lista_iter_t *iter);
 // Post: devuelve el valor del iterador
 void *lista_iter_ver_actual(const lista_iter_t *iter);
 
-//
+
 // Pre: el iter fue creado
 // Post: devuelve true si el iterador se encuentra al final, false en otro caso
 bool lista_iter_al_final(const lista_iter_t *iter);
 
 // Destructor del iterador externo.
 // Pre: el iterador fue creado
-// Post: Se destruye el iterador
+// Post: Se libera la memoria del iterador
 void lista_iter_destruir(lista_iter_t *iter);
 
+// Inserta un elemento en la lista en la posicion del iterador
+// El elemento insertado va a tomar la posicion del iterador
+// Como resultado ver el iterador actual es el elemento agregado
+// Pre: el iterador fue creado
+// Post: devuelve true si se inserto el elemento en la lista
+// false en otro caso
 bool lista_iter_insertar(lista_iter_t *iter, void *dato);
 
+// Elimina el elemento al que apunta el iterador. Si la lista no tiene
+// elementos o si el iterador se encuentra al final, devuelve NULL
 void *lista_iter_borrar(lista_iter_t *iter);
 
 /* *****************************************************************
