@@ -181,15 +181,57 @@ void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *e
  *               PRIMITIVAS DEL ITERADOR EXTERNO
  * *****************************************************************/
 
-lista_iter_t *lista_iter_crear(lista_t *lista);
+lista_iter_t *lista_iter_crear(lista_t *lista) {
+    lista_iter_t* iter = malloc(sizeof(lista_iter_t));
+    if(iter == NULL){
+        return NULL;
+    }
+    iter->lista = lista;
+    iter->act = lista_ver_primero(lista);
+    iter->ant = NULL;
 
-bool lista_iter_avanzar(lista_iter_t *iter);
+    return iter;
+}
 
-void *lista_iter_ver_actual(const lista_iter_t *iter);
+bool lista_iter_avanzar(lista_iter_t *iter) {
+    //Si la lista esta vacia no se puede avanzar
+    if(lista_esta_vacia(iter->lista)){
+        return false;
+    }
+
+    //Si el actual es null, no se puede avanzar
+    if(iter->act == NULL){
+        return false;
+    }
+
+    iter->ant = iter->act;
+    iter->act = iter->act->siguiente;
+
+    return true;
+}
+
+void *lista_iter_ver_actual(const lista_iter_t *iter) {
+    if(lista_esta_vacia(iter->lista)){
+        return NULL;
+    }
+
+    // Si el actual esta posicionado al final de la lista (NULL)
+    // Entonces deberia devolver el valor del del elemento anterior
+    if(iter->act == NULL){
+        return iter->ant->dato;
+    }
+
+    return iter->act->dato;
+}
 
 bool lista_iter_al_final(const lista_iter_t *iter);
 
-void lista_iter_destruir(lista_iter_t *iter);
+void lista_iter_destruir(lista_iter_t *iter) {
+    iter->lista = NULL;
+    iter->act = NULL;
+    iter->ant = NULL;
+    free(iter);
+}
 
 bool lista_iter_insertar(lista_iter_t *iter, void *dato);
 

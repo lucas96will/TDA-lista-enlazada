@@ -74,7 +74,7 @@ void lista_destruir(lista_t *lista, void (*destruir_dato)(void *));
  *               PRIMITIVA DEL ITERADOR INTERNO
  * *****************************************************************/
 
-// Itererador interno de la lista. Recorre la lista hasta el final, mientras la función visitar devuelva true.
+// Iterarador interno de la lista. Recorre la lista hasta el final, mientras la función visitar devuelva true.
 // Pre: la lista fue creada.
 // Post: Se recorrió la lista hasta el final, o hasta que la función visitar devolvió true.
 void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *extra);
@@ -83,14 +83,28 @@ void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *e
  *               PRIMITIVAS DEL ITERADOR EXTERNO
  * *****************************************************************/
 
+// Iterador externo de la lista.
+// Pre: la lista fue creada
+// Post: Se devuelve el iterador apuntando a la primera posicion de la lista
 lista_iter_t *lista_iter_crear(lista_t *lista);
 
+// Avanza el iterador en una posicion de la lista
+// Pre: el iterador fue creado
+// Post: Devuelve true si se pudo avanzar el iterador en la lista
+// en otro caso, false
 bool lista_iter_avanzar(lista_iter_t *iter);
 
+// Obtiene el valor en el cual el iterador esta posicionado en la lista
+// si la lista no tiene elementos devuelve NULL
+// Pre: el iterador fue creado
+// Post: devuelve el valor del iterador
 void *lista_iter_ver_actual(const lista_iter_t *iter);
 
 bool lista_iter_al_final(const lista_iter_t *iter);
 
+// Destructor del iterador externo.
+// Pre: el iterador fue creado
+// Post: Se destruye el iterador
 void lista_iter_destruir(lista_iter_t *iter);
 
 bool lista_iter_insertar(lista_iter_t *iter, void *dato);
