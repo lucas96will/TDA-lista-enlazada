@@ -277,6 +277,24 @@ void static prueba_lista_iterar_interno() {
     free(vec);
 }
 
+static void prueba_lista_iterador_insertar() {
+/*
+    FALTAN AGREGAR PRUEBAS
+*/
+    lista_t* lista = lista_crear();
+    lista_iter_t* iter = lista_iter_crear(lista);
+
+    int vec[TAM_PRUEBA_VEC] = {4, 8, 12, 16, 20};
+
+    lista_iter_insertar(iter, &vec[0]);
+
+    //primer elemento de la lista es 4
+    print_test("Inserto con iterador el 4 en la primera posicion de la lista", *(int*) lista_ver_primero(lista) == 4);
+
+    lista_iter_destruir(iter);
+    lista_destruir(lista, NULL);
+}
+
 void pruebas_lista_estudiante() {
     //..
     prueba_lista_crear();
@@ -287,6 +305,7 @@ void pruebas_lista_estudiante() {
     prueba_lista_ver();
     prueba_lista_iterar_interno();
 
+    prueba_lista_iterador_insertar();
 }
 
 

@@ -188,7 +188,7 @@ lista_iter_t *lista_iter_crear(lista_t *lista) {
         return NULL;
     }
     iter->lista = lista;
-    iter->act = lista_ver_primero(lista);
+    iter->act = lista->primero;
     iter->ant = NULL;
 
     return iter;
@@ -236,40 +236,43 @@ void lista_iter_destruir(lista_iter_t *iter) {
 }
 
 bool lista_iter_insertar(lista_iter_t *iter, void *dato) {
-    nodo_t* dato_nuevo = crear_nodo();
-    if(dato_nuevo == NULL) {
+    nodo_t* nodo_nuevo = crear_nodo();
+    if(nodo_nuevo == NULL) {
         return false;
     }
-    dato_nuevo->dato = dato;
-    dato_nuevo->siguiente = iter->act;
-    iter->lista->largo++;
+    nodo_nuevo->dato = dato;
+    nodo_nuevo->siguiente = iter->act;
 
     // Lista vacia, inserto y cambio los punteros (primero y ultimo) de la lista
     if(lista_esta_vacia(iter->lista)) {
-        iter->lista->primero = dato_nuevo;
-        iter->lista->ultimo = dato_nuevo;
-        iter->act = dato_nuevo;
+        iter->lista->primero = nodo_nuevo;
+        iter->lista->ultimo = nodo_nuevo;
+        iter->act = nodo_nuevo;
+        iter->lista->largo++;
         return true;
     }
 
     // Si el iterador esta al final, inserto y cambio el puntero ultimo de la lista
     if(lista_iter_al_final(iter)) {
-        iter->act = dato_nuevo;
+        iter->act = nodo_nuevo;
         iter->ant->siguiente = iter->act;
-        iter->lista->ultimo = dato_nuevo;
+        iter->lista->ultimo = nodo_nuevo;
+        iter->lista->largo++;
         return true;
     }
 
     // Si el iterador esta en la primer posicion, inserto y cambio el puntero primero de la lista
     if(iter->act == iter->lista->primero) {
-        iter->lista->primero = dato_nuevo;
-        iter->act = dato_nuevo;
+        iter->lista->primero = nodo_nuevo;
+        iter->act = nodo_nuevo;
+        iter->lista->largo++;
         return true;
     }
 
     // En otro caso el iterador no se encuentra ni al principio ni al final de la lista
-    iter->ant->siguiente = dato_nuevo;
-    iter->act = dato_nuevo;
+    iter->ant->siguiente = nodo_nuevo;
+    iter->act = nodo_nuevo;
+    iter->lista->largo++;
 
     return true;
 }
@@ -286,7 +289,6 @@ void *lista_iter_borrar(lista_iter_t *iter) {
 
     void* aux = iter->act->dato;
     nodo_t* nodo_eliminar = iter->act;
-    iter->lista->largo--;
 
     // Si la lista tiene solo 1 elemento
     if(iter->lista->largo == 0) {
@@ -294,6 +296,7 @@ void *lista_iter_borrar(lista_iter_t *iter) {
         iter->lista->primero = NULL;
         iter->act = NULL;
         destruir_nodo(nodo_eliminar);
+        iter->lista->largo--;
         return aux;
     }
 
@@ -303,6 +306,7 @@ void *lista_iter_borrar(lista_iter_t *iter) {
         iter->ant->siguiente = iter->act->siguiente;
         iter->act = iter->act->siguiente;
         destruir_nodo(nodo_eliminar);
+        iter->lista->largo--;
         return aux;
     }
 
@@ -311,6 +315,7 @@ void *lista_iter_borrar(lista_iter_t *iter) {
         iter->act = iter->act->siguiente;
         iter->lista->primero = iter->act;
         destruir_nodo(nodo_eliminar);
+        iter->lista->largo--;
         return aux;
     }
 
@@ -319,5 +324,6 @@ void *lista_iter_borrar(lista_iter_t *iter) {
     iter->act = iter->act->siguiente;
     iter->ant->siguiente = iter->act;
     destruir_nodo(nodo_eliminar);
+    iter->lista->largo--;
     return aux;
 }
