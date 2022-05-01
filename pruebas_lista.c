@@ -44,27 +44,27 @@ static void prueba_lista_insertar() {
 
     //Inserto el 2 al princpio y pruebo si el primero es 2
     print_test("Insertar el 2 primero en la lista", lista_insertar_primero(lista, &vec[0]));
-    print_test("El primero en la lista es el 2", *(int*)lista_ver_primero(lista) == 2);
+    print_test("El primero en la lista es el 2", *(int*) lista_ver_primero(lista) == 2);
 
     //Inserto el 4 al princpio y pruebo si el primero es 4, el ultimo 2
     print_test("Insertar el 4 primero en la lista", lista_insertar_primero(lista, &vec[1]));
-    print_test("El primero en la lista es el 4", *(int*)lista_ver_primero(lista) == 4);
-    print_test("Ultimo en la lista es el 2", *(int*)lista_ver_ultimo(lista) == 2);
+    print_test("El primero en la lista es el 4", *(int*) lista_ver_primero(lista) == 4);
+    print_test("Ultimo en la lista es el 2", *(int*) lista_ver_ultimo(lista) == 2);
 
     //Inserto el 6 al principio y pruebo si el primero es 6 y ultimo 2
     print_test("Insertar el 6 primero en la lista", lista_insertar_primero(lista, &vec[2]));
-    print_test("El primero en la lista es el 6", *(int*)lista_ver_primero(lista) == 6);
-    print_test("Ultimo en la lista es el 2", *(int*)lista_ver_ultimo(lista) == 2);
+    print_test("El primero en la lista es el 6", *(int*) lista_ver_primero(lista) == 6);
+    print_test("Ultimo en la lista es el 2", *(int*) lista_ver_ultimo(lista) == 2);
 
     //Inserto el 8 a lo ultimo y pruebo si el primero es 6 y el ultimo 8
     print_test("Insertar el 6 primero en la lista", lista_insertar_ultimo(lista, &vec[3]));
-    print_test("El primero en la lista es el 6", *(int*)lista_ver_primero(lista) == 6);
-    print_test("Ultimo en la lista es el 8", *(int*)lista_ver_ultimo(lista) == 8);
+    print_test("El primero en la lista es el 6", *(int*) lista_ver_primero(lista) == 6);
+    print_test("Ultimo en la lista es el 8", *(int*) lista_ver_ultimo(lista) == 8);
 
     //Inserto el 10 a lo ultimo y pruebo si el primero es 6 y el ultimo 10
     print_test("Insertar el 6 primero en la lista", lista_insertar_ultimo(lista, &vec[4]));
-    print_test("El primero en la lista es el 6", *(int*)lista_ver_primero(lista) == 6);
-    print_test("Ultimo en la lista es el 8", *(int*)lista_ver_ultimo(lista) == 10);
+    print_test("El primero en la lista es el 6", *(int*) lista_ver_primero(lista) == 6);
+    print_test("Ultimo en la lista es el 8", *(int*) lista_ver_ultimo(lista) == 10);
 
     lista_destruir(lista, NULL);
 }
@@ -80,7 +80,7 @@ static void prueba_lista_esta_vacia() {
     print_test("La lista no esta vacia", !lista_esta_vacia(lista));
 
     //borro al principio y pruebo si esta vacia
-    print_test("Borro el 2 de la lista", *(int*)lista_borrar_primero(lista) == 2);
+    print_test("Borro el 2 de la lista", *(int*) lista_borrar_primero(lista) == 2);
     print_test("La lista esta vacia", lista_esta_vacia(lista));
 
     //Inserto a lo ultimo, pruebo si esta vacia
@@ -88,7 +88,7 @@ static void prueba_lista_esta_vacia() {
     print_test("La lista no esta vacia", !lista_esta_vacia(lista));
 
     //borro al principio y pruebo si esta vacia
-    print_test("Borro el 2 de la lista", *(int*)lista_borrar_primero(lista) == 2);
+    print_test("Borro el 2 de la lista", *(int*) lista_borrar_primero(lista) == 2);
     print_test("La lista esta vacia", lista_esta_vacia(lista));
 
 
