@@ -216,16 +216,16 @@ void *lista_iter_ver_actual(const lista_iter_t *iter) {
         return NULL;
     }
 
-    // Si el iterador esta al final, devuelvo el valor del anterior
+    // Si el iterador esta al final, devuelvo NULL
     if(lista_iter_al_final(iter)) {
-        return iter->ant->dato;
+        return NULL;
     }
 
     return iter->act->dato;
 }
 
 bool lista_iter_al_final(const lista_iter_t *iter) {
-    return (iter->act == NULL);
+    return (iter->act == NULL && iter->ant == iter->lista->ultimo);
 }
 
 void lista_iter_destruir(lista_iter_t *iter) {
