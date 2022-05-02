@@ -38,6 +38,19 @@ static void prueba_lista_crear() {
     print_test("Lista creada ver ultimo es NULL", lista_ver_primero(lista) == NULL);
     print_test("Lista creada obtener largo es 0", lista_largo(lista) == 0);
 
+    //Inserto un elemento y lo borro
+    int num = 8;
+    lista_insertar_primero(lista,&num);
+    lista_borrar_primero(lista);
+
+    printf("\nInserto un elemento y lo borro, pruebo si la pila se comporta como recien creada\n");
+    print_test("Lista vacia", lista_esta_vacia(lista));
+    print_test("Lista borrar primero es NULL", lista_borrar_primero(lista) == NULL);
+    print_test("Lista ver primero es NULL", lista_ver_primero(lista) == NULL);
+    print_test("Lista ver ultimo es NULL", lista_ver_primero(lista) == NULL);
+    print_test("Lista obtener largo es 0", lista_largo(lista) == 0);
+
+
     lista_destruir(lista, NULL);
 }
 static void prueba_lista_insertar() {
