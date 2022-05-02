@@ -412,21 +412,46 @@ void static prueba_lista_iterar_interno() {
     free(vec);
 }
 
-static void prueba_lista_iterador_insertar() {
-/*
-    FALTAN AGREGAR PRUEBAS
-*/
+static void prueba_iterador_externo_operaciones_basicas() {
+
+    printf("\nINICIO DE PRUEBAS DE ITERADOR EXTERNO CREAR, VER ACTUAL, ITER AL FINAL, AVANZAR \n");
+
     lista_t* lista = lista_crear();
     lista_iter_t* iter = lista_iter_crear(lista);
 
+    print_test("El iterador fue creado", iter != NULL);
+    print_test("Ver actual del iterador en una lista vacia es null", lista_iter_ver_actual(iter) == NULL);
+    print_test("El iterador se encuentra al final de la lista", lista_iter_al_final(iter));
+    print_test("Avanzar el iterador no es posible y devuelve false", lista_iter_avanzar(iter) == false);
+
+
     int vec[TAM_PRUEBA_VEC] = {4, 8, 12, 16, 20};
-
     lista_iter_insertar(iter, &vec[0]);
+    // Primer elemento de la lista es 4
 
-    //primer elemento de la lista es 4
     print_test("Inserto con iterador el 4 en la primera posicion de la lista", *(int*) lista_ver_primero(lista) == 4);
+    print_test("Ver actual del iterador devuelve el 4", *(int*) lista_iter_ver_actual(iter) == 4);
+    print_test("El iterador no se encuentra al final de la lista", lista_iter_al_final(iter) == false);
+    // Avanzo el iterador
+    print_test("Avanzar el iterador es posible", lista_iter_avanzar(iter));
+    print_test("El iterador se encuentra al final", lista_iter_al_final(iter));
+
+    // Inserto el 8 -> [4, 8]
+    lista_iter_insertar(iter, &vec[1]);
+    print_test("Inserto el 8 y ver actual del iterador devuelve un 8", *(int*) lista_iter_ver_actual(iter) == 8);
+    print_test("El iterador no se encuentra al final", lista_iter_al_final(iter) == false);
+    print_test("Avanzar el iterador es posible", lista_iter_avanzar(iter));
+    print_test("El iterador se encuentra al final", lista_iter_al_final(iter));
+    print_test("Avanzar el iterador al final no es posible", lista_iter_avanzar(iter) == false);
+    print_test("Borrar con el iterador al final no es posible", lista_iter_borrar(iter) == false);
 
     lista_iter_destruir(iter);
+
+    print_test("Destruyo el iterador y la lista no esta vacia", lista_esta_vacia(lista) == false);
+    print_test("Destruyo el iterador y el primero en la lista es el 4", *(int*) lista_ver_primero(lista) == 4);
+    print_test("Destruyo el iterador y el ultimo en la lista es el 8", *(int*) lista_ver_ultimo(lista) == 8);
+
+
     lista_destruir(lista, NULL);
 }
 
@@ -597,10 +622,11 @@ void pruebas_lista_estudiante() {
     prueba_lista_de_pilas_con_destruccion();
     prueba_lista_de_pilas_con_destruccion_manual();
     prueba_lista_iterar_interno();
-    prueba_lista_iterador_insertar();
+    prueba_iterador_externo_operaciones_basicas();
     pruebas_iterador_externo_insertar();
     pruebas_iterador_externo_borrar();
     pruebas_iterador_externo_NULL();
+
 }
 
 

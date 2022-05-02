@@ -83,7 +83,7 @@ void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *e
  *               PRIMITIVAS DEL ITERADOR EXTERNO
  * *****************************************************************/
 
-// Iterador externo de la lista.
+// El iterador es una estructura que permite recorrer los elementos de la lista
 // Pre: la lista fue creada
 // Post: Se devuelve el iterador apuntando a la primera posicion de la lista
 lista_iter_t *lista_iter_crear(lista_t *lista);
