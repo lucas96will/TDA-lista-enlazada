@@ -85,19 +85,21 @@ void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *e
 
 // El iterador es una estructura que permite recorrer los elementos de la lista
 // Pre: la lista fue creada
-// Post: Se devuelve el iterador apuntando a la primera posicion de la lista
+// Post: Se devuelve el iterador en la primera posicion de la lista
 lista_iter_t *lista_iter_crear(lista_t *lista);
 
-// Avanza el iterador en una posicion de la lista
+// Avanza el iterador una posicion en la lista
+// la posicion que puede tomar el iterador es desde el principio
+// hasta el final de la lista
 // Pre: el iterador fue creado
 // Post: Devuelve true si se pudo avanzar el iterador en la lista
 // en otro caso, false
 bool lista_iter_avanzar(lista_iter_t *iter);
 
 // Obtiene el valor en el cual el iterador esta posicionado en la lista
-// si la lista no tiene elementos devuelve NULL
 // Pre: el iterador fue creado
-// Post: devuelve el valor del iterador
+// Post: devuelve el valor del iterador o NULL si la lista
+// no tiene elementos o el iterador esta al final de la lista
 void *lista_iter_ver_actual(const lista_iter_t *iter);
 
 
@@ -118,8 +120,12 @@ void lista_iter_destruir(lista_iter_t *iter);
 // false en otro caso
 bool lista_iter_insertar(lista_iter_t *iter, void *dato);
 
-// Elimina el elemento al que apunta el iterador. Si la lista no tiene
-// elementos o si el iterador se encuentra al final, devuelve NULL
+// Elimina el elemento en el cual esta posicionado el iterador.
+// Si la lista no tiene elementos o si el iterador se encuentra
+// al final, devuelve NULL
+// Pre: el iter fue creado
+// Post: Se elimino el elemento de la lista y se devuelve el valor.
+// Si no se pudo borrar se devuelve NULL
 void *lista_iter_borrar(lista_iter_t *iter);
 
 /* *****************************************************************

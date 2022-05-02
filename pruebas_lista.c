@@ -484,7 +484,7 @@ static void pruebas_iterador_externo_insertar() {
 
     print_test("Inserto al 4 como primero de la lista usando el iterador", lista_iter_insertar(iter, &vec[0]));
     print_test("Verifico que el actual sea el 4", *(int*) lista_iter_ver_actual(iter) == 4);
-    print_test("Verifico que el primero de la lista sea el 4", *(int*)lista_ver_primero(lista) == 4);
+    print_test("Verifico que el primero de la lista sea el 4", *(int*) lista_ver_primero(lista) == 4);
     //La lista es [4, 12, 16]
 
     lista_iter_avanzar(iter);
