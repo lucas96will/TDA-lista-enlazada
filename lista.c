@@ -154,7 +154,6 @@ void lista_destruir(lista_t *lista, void (*destruir_dato)(void *)) {
         }
     }
     free(lista);    
-    return;
 }
 
 /* *****************************************************************
@@ -174,8 +173,6 @@ void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *e
         continuar = visitar(actual->dato, extra);
         actual = actual->siguiente;
     }
-
-    return;
 }
 
 /* *****************************************************************
