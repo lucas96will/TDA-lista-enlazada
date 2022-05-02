@@ -288,7 +288,7 @@ void *lista_iter_borrar(lista_iter_t *iter) {
     nodo_t *nodo_eliminar = iter->act;
 
     // Si la lista tiene solo 1 elemento
-    if(iter->lista->largo == 0) {
+    if(iter->lista->largo == 1) {
         iter->lista->ultimo = NULL;
         iter->lista->primero = NULL;
         iter->act = NULL;

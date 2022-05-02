@@ -464,7 +464,20 @@ static void prueba_iterador_externo_operaciones_basicas() {
     print_test("Destruyo el iterador y el primero en la lista es el 4", *(int*) lista_ver_primero(lista) == 4);
     print_test("Destruyo el iterador y el ultimo en la lista es el 8", *(int*) lista_ver_ultimo(lista) == 8);
 
+    // Borro los elementos con el iterador
+    lista_iter_t *aux = lista_iter_crear(lista);
+    lista_iter_borrar(aux);
+    print_test("Borro un elemento con el iterador y la lista no esta vacia", lista_esta_vacia(lista) == false);
+    print_test("El ultimo de la lista es el 8", *(int*) lista_ver_ultimo(lista) == 8);
+    print_test("El primero de la lista es el 4", *(int*) lista_ver_primero(lista) == 8);
 
+    lista_iter_borrar(aux);
+    print_test("Borro un elemento con el iterador y la lista esta vacia", lista_esta_vacia(lista));
+    print_test("Ver ultimo de la lista es null", lista_ver_ultimo(lista) == NULL);
+    print_test("Ver primero de la lista es null", lista_ver_ultimo(lista) == NULL);
+
+
+    lista_iter_destruir(aux);
     lista_destruir(lista, NULL);
 }
 
