@@ -2,6 +2,7 @@
 #include "lista.h"
 #include "testing.h"
 #include "pila.h"
+#include <stdlib.h>
 
 #define TAM_PRUEBA_VEC 5
 #define TAM_PRUEBA_VOLUMEN 100
@@ -47,7 +48,7 @@ static void prueba_lista_crear() {
     print_test("Lista vacia", lista_esta_vacia(lista));
     print_test("Lista borrar primero es NULL", lista_borrar_primero(lista) == NULL);
     print_test("Lista ver primero es NULL", lista_ver_primero(lista) == NULL);
-    print_test("Lista ver ultimo es NULL", lista_ver_primero(lista) == NULL);
+    print_test("Lista ver ultimo es NULL", lista_ver_ultimo(lista) == NULL);
     print_test("Lista obtener largo es 0", lista_largo(lista) == 0);
 
 
@@ -123,14 +124,14 @@ static void prueba_lista_borrar() {
 
     //Agrego a la lista algunos elementos a lo ultimo
     _lista_insertar_arreglo(lista, vec, TAM_PRUEBA_VEC, lista_insertar_ultimo);
-    //La lista deberia ser (primero) [4, 8, 12, 16, 20] (ultimo), comprobamos*/
+    //La lista deberia ser (primero) [4, 8, 12, 16, 20] (ultimo)
 
     //Pruebo si los elementos borrados son los correctos!
     print_test("Prueba lista borrar elementos agregados al final", _lista_borrar_comparar(lista, vec));
 
     //Agrego elementos al principio y compruebo que al borrar sean los adecuados
     _lista_insertar_arreglo(lista, vec, TAM_PRUEBA_VEC, lista_insertar_primero);
-    //La lista deberia ser (primero) [20, 16, 12, 8, 4] (ultimo), comprobamos*/
+    //La lista deberia ser (primero) [20, 16, 12, 8, 4] (ultimo)
 
     print_test("Prueba lista borrar elementos agregados al principio", _lista_borrar_comparar(lista, vec2));
 
@@ -179,14 +180,17 @@ static void prueba_lista_ver() {
     lista_insertar_primero(lista, &vec[0]);
     print_test("Inserto al inicio el 4 en la lista y el primero es el 4", *(int*) lista_ver_primero(lista) == 4);
     print_test("El ultimo en la lista es el 4", *(int*) lista_ver_ultimo(lista) == 4);
+    print_test("Largo de lista 1", lista_largo(lista) == 1);
 
     lista_insertar_primero(lista, &vec[1]);
     print_test("Inserto al inicio el 8 en la lista y el primero es el 8", *(int*) lista_ver_primero(lista) == 8);
     print_test("El ultimo en la lista es el 4", *(int*) lista_ver_ultimo(lista) == 4);
+    print_test("Largo de lista 2", lista_largo(lista) == 2);
 
     lista_insertar_ultimo(lista, &vec[2]);
     print_test("Inserto al final el 12 en la lista y el primero es el 8", *(int*) lista_ver_primero(lista) == 8);
     print_test("El ultimo en la lista es el 12", *(int*) lista_ver_ultimo(lista) == 12);
+    print_test("Largo de lista 3", lista_largo(lista) == 3);
 
     //La lista es [8, 4, 12]
 
@@ -195,15 +199,18 @@ static void prueba_lista_ver() {
     lista_borrar_primero(lista);
     print_test("Borro el primer elemento de la lista y el nuevo primero es el 4", *(int*) lista_ver_primero(lista) == 4);
     print_test("El ultimo elemento sigue siendo el 12", *(int*) lista_ver_ultimo(lista) == 12);
+    print_test("Largo de lista 2", lista_largo(lista) == 2);
 
     lista_borrar_primero(lista);
     print_test("Borro el primer elemento de la lista y el nuevo primero es el 4", *(int*) lista_ver_primero(lista) == 12);
     print_test("El ultimo elemento sigue siendo el 12", *(int*) lista_ver_ultimo(lista) == 12);
+    print_test("Largo de lista 1", lista_largo(lista) == 1);
 
     lista_borrar_primero(lista);
     //ambos, ultimo y primero deben ser null
     print_test("El primer elemento de la lista es null", lista_ver_primero(lista) == NULL);
     print_test("El ultimo elemento de la lista es null", lista_ver_ultimo(lista) == NULL);
+    print_test("Largo de lista 0", lista_largo(lista) == 0);
 
     lista_destruir(lista, NULL);
 }
@@ -213,12 +220,18 @@ static void prueba_lista_NULL() {
 
     lista_t* lista = lista_crear();
     print_test("Lista esta vacia", lista_esta_vacia(lista));
+
     print_test("Inserto NULL al principio", lista_insertar_primero(lista, NULL));
-    print_test("Inserto NULL al final", lista_insertar_ultimo(lista, NULL));
     print_test("El primero es NULL", lista_ver_primero(lista) == NULL);
     print_test("El ultimo es NULL", lista_ver_ultimo(lista) == NULL);
     print_test("La lista no esta vacia", !lista_esta_vacia(lista));
     print_test("Borrar el primero devuelve NULL", lista_borrar_primero(lista) == NULL);
+    print_test("Lista esta vacia nuevamente", lista_esta_vacia(lista));
+
+    print_test("Inserto NULL al final", lista_insertar_ultimo(lista, NULL));
+    print_test("El primero es NULL", lista_ver_primero(lista) == NULL);
+    print_test("El ultimo es NULL", lista_ver_ultimo(lista) == NULL);
+    print_test("La lista no esta vacia", !lista_esta_vacia(lista));
     print_test("Borrar el primero devuelve NULL", lista_borrar_primero(lista) == NULL);
     print_test("Lista esta vacia nuevamente", lista_esta_vacia(lista));
 
@@ -373,6 +386,8 @@ bool sumar_primeros_5(void* dato, void* extra){
 }
 
 void static prueba_lista_iterar_interno() {
+
+     printf("\nINICIO DE PRUEBAS DE ITERADOR INTERNO \n");
     lista_t* lista = lista_crear();
     int* vec = malloc(TAM_PRUEBA_VOLUMEN*sizeof(int));
 
@@ -385,27 +400,17 @@ void static prueba_lista_iterar_interno() {
     int numero_a_sumar = 1;
     lista_iterar(lista, sumar_numero, &numero_a_sumar);
 
-
-    num_iterador_t num_a_encontrar;
-    num_a_encontrar.estado = false;
-    num_a_encontrar.num = 99;
-
-    //Hallo si el 99 esta en la lista
-
-    lista_iterar(lista, encontrar_numero, &num_a_encontrar);
-
-    print_test("Se hallo el 99 en la lista con iterador interno", num_a_encontrar.estado);
-
     bool suma = true;
     int j = 0;
     int num_aux;
+    //Mientras borro verifico que se le habia sumado uno a cada elemento
     while(!lista_esta_vacia(lista)) {
         num_aux = *(int*) lista_borrar_primero(lista);
         suma &= (num_aux == j+1);
         j++;
     }
 
-    print_test("Sumo 1 a todos los elementos con iterador interno", suma);
+    print_test("Se sumo 1 a todos los elementos con iterador interno", suma);
 
     _lista_insertar_arreglo(lista, vec, TAM_PRUEBA_VOLUMEN, lista_insertar_ultimo);
 
@@ -414,12 +419,6 @@ void static prueba_lista_iterar_interno() {
     lista_iterar(lista, sumar_primeros_5, &sumas);
 
     print_test("Sumo los primeros 5 elementos", sumas == 10);
-
-    while(!lista_esta_vacia(lista)){
-        lista_borrar_primero(lista);
-    }
-
-    print_test("Borro todos los elementos de la lista", lista_esta_vacia(lista));
 
     lista_destruir(lista, NULL);
     free(vec);
@@ -469,7 +468,7 @@ static void prueba_iterador_externo_operaciones_basicas() {
     lista_iter_borrar(aux);
     print_test("Borro un elemento con el iterador y la lista no esta vacia", lista_esta_vacia(lista) == false);
     print_test("El ultimo de la lista es el 8", *(int*) lista_ver_ultimo(lista) == 8);
-    print_test("El primero de la lista es el 4", *(int*) lista_ver_primero(lista) == 8);
+    print_test("El primero de la lista es el 8", *(int*) lista_ver_primero(lista) == 8);
 
     lista_iter_borrar(aux);
     print_test("Borro un elemento con el iterador y la lista esta vacia", lista_esta_vacia(lista));
@@ -523,7 +522,8 @@ static void pruebas_iterador_externo_insertar() {
     print_test("Inserto al 18 como anteultimo de la lista usando el iterador", lista_iter_insertar(iter, &nuevo));
     print_test("Verifico que el actual sea el 18", *(int*) lista_iter_ver_actual(iter) == 18);
     print_test("verifico que el utlimo de la lista es el 20 igualmente", *(int*) lista_ver_ultimo(lista) == 20);
-    //La lista es [4, 8, 12, 16, 18, 20] ->largo = 6
+    print_test("El largo es 6", lista_largo(lista) == 6);
+    //La lista es [4, 8, 12, 16, 18, 20]
 
     lista_iter_destruir(iter);
     //Verifico que despues de destruido el iterador la lista no pierde los cambios hechos con este

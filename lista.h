@@ -11,10 +11,8 @@
 
 /* Breve descripción */
 
-struct lista;
 typedef struct lista lista_t;
 
-struct lista_iter;
 typedef struct lista_iter lista_iter_t;
 
 /* *****************************************************************
@@ -26,7 +24,7 @@ typedef struct lista_iter lista_iter_t;
 lista_t *lista_crear(void);
 
 // Devuelve true si la lista no tiene elementos, false en caso contrario.
-// Pre: la lista fue creada.
+// Pre: la lista fue creada. La lista no se modifica.
 bool lista_esta_vacia(const lista_t *lista);
 
 // Inserta un elemento que pasa a ser el primero de la lista. Devuelve false en caso de error.
@@ -43,24 +41,24 @@ bool lista_insertar_ultimo(lista_t *lista, void *dato);
 // primero de la lista, y se devuelve su valor, si está vacía, devuelve NULL.
 // Pre: la lista fue creada.
 // Post: se devolvió el valor del primer elemento anterior(el eliminado), la lista
-// contiene un elemento menos, si la lista no estaba vacía.
+// contiene un elemento menos, si la lista no estaba vacía. La lista no se modifica.
 void *lista_borrar_primero(lista_t *lista);
 
 // Obtiene el valor del primer elemento de la lista. Si la lista tiene
 // elementos, se devuelve el valor del primero, si está vacía devuelve NULL.
 // Pre: la lista fue creada.
-// Post: se devolvió el primer elemento de la lista, cuando no está vacía.
+// Post: se devolvió el primer elemento de la lista, cuando no está vacía. La lista no se modifica.
 void *lista_ver_primero(const lista_t *lista);
 
 // Obtiene el valor del ultimo elemento de la lista. Si la lista tiene
 // elementos, se devuelve el valor del ultimo, si está vacía devuelve NULL.
 // Pre: la lista fue creada.
-// Post: se devolvió el ultimo elemento de la lista, cuando no está vacía.
+// Post: se devolvió el ultimo elemento de la lista, cuando no está vacía. La lista no se modifica.
 void *lista_ver_ultimo(const lista_t* lista);
 
 // Devuelve el largo de la lista, cero si esta vacia.
 // Pre: la lista fue creada.
-// Post: se devolvió el largo de la lista.
+// Post: se devolvió el largo de la lista. La lista no se modifica.
 size_t lista_largo(const lista_t *lista);
 
 // Destruye la lista. Si se recibe la función destruir_dato por parámetro,
@@ -74,7 +72,8 @@ void lista_destruir(lista_t *lista, void (*destruir_dato)(void *));
  *               PRIMITIVA DEL ITERADOR INTERNO
  * *****************************************************************/
 
-// Iterarador interno de la lista. Recorre la lista hasta el final, mientras la función visitar devuelva true.
+// Iterarador interno de la lista. Recorre la lista hasta el final, aplicando la funcion visitar
+// a cada elemento o, mientras la función visitar devuelva true.
 // Pre: la lista fue creada.
 // Post: Se recorrió la lista hasta el final, o hasta que la función visitar devolvió true.
 void lista_iterar(lista_t *lista, bool visitar(void *dato, void *extra), void *extra);
@@ -113,10 +112,10 @@ bool lista_iter_al_final(const lista_iter_t *iter);
 void lista_iter_destruir(lista_iter_t *iter);
 
 // Inserta un elemento en la lista en la posicion del iterador
-// El elemento insertado va a tomar la posicion del iterador
-// Como resultado ver el iterador actual es el elemento agregado
 // Pre: el iterador fue creado
-// Post: devuelve true si se inserto el elemento en la lista
+// Post: El elemento insertado va a tomar la posicion del iterador
+// Como resultado ver el iterador actual es el elemento agregado
+// Devuelve true si se inserto el elemento en la lista
 // false en otro caso
 bool lista_iter_insertar(lista_iter_t *iter, void *dato);
 
